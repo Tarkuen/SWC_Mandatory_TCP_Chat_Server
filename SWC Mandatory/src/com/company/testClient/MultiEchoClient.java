@@ -13,7 +13,7 @@ public class MultiEchoClient
     {
 //        try
 //        {
-        host = "192.168.1.93";
+        host = "localhost";
 //        }
 //        catch(UnknownHostException uhEx)
 //        {

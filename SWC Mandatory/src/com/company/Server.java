@@ -4,6 +4,7 @@ import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Server extends Thread{
 
@@ -13,7 +14,7 @@ public class Server extends Thread{
     private int port;
 
     //    Client Listen
-    private List<ClientThread> clientList = null;
+    private volatile List<ClientThread> clientList = null;
 
     //    ServerSocket
     private ServerSocket server;
@@ -52,24 +53,52 @@ public class Server extends Thread{
         boolean isrunning = true;
 
             while (isrunning) {
+
                 System.out.println("Listening for a client");
+
                 Socket socket = null;
                 try {
                     socket = server.accept();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 System.out.println("Client Accepted");
-
                 ClientThread newClient = new ClientThread(socket, new Client(), Server.this);
-                System.out.println(newClient);
 
+                newClient.out.println("J_OK: Welcome to the server");
+                String input = newClient.in.nextLine();
+                newClient.getClient().setUsername(input);
+                input = newClient.in.nextLine();
+                newClient.getClient().setIpAdress(input);
+                input=newClient.in.nextLine();
+                newClient.getClient().setPort(Integer.parseInt(input));
+                newClient.getClient().setAmAlive(true);
+
+
+                    for (ClientThread ct1 : clientList) {
+                        if(newClient.getClient().getUsername().equalsIgnoreCase(ct1.getClient().getUsername())){
+                        newClient.getClient().setUsername(newClient.getClient().getUsername()+uniqueConnectionID);
+                        newClient.out.print("Bad Username - Added "+uniqueConnectionID+" to name"+'\n');
+                        uniqueConnectionID++;
+                        }
+                    }
+
+//                TODO: Promt for Username + Check
+//                TODO: PRE: Kend liste over CLienter
+//                TODO: POST: Client har fået sat sit username og lyt+send (serverside) er oprettet.
+
+
+
+
+//                TODO: Fjern dette ansvar til LOGIN CASE
                 clientList.add(newClient);
                 System.out.println("Client added to list");
+
+
 
                 Thread t2 = new Thread(newClient);
                 t2.start();
 
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
             }
@@ -79,12 +108,12 @@ public class Server extends Thread{
 
 
 
-    public void sendMsg(String msg) {
+    public void sendMsg(Client client, String msg) {
 
-        for (int i = getClientList().size() - 1; i >= 0; i--) {
-            ClientThread t1 = getClientList().get(i);
-            t1.out.println(msg);
+        for (ClientThread ct1 : getClientList()) {
+            ct1.out.println(client.getUsername()+" : "+msg);
         }
+
     }
 
 
