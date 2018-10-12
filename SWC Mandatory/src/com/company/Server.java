@@ -88,8 +88,10 @@ public class Server extends Thread{
 
 
 //                TODO: Fjern dette ansvar til LOGIN CASE
+                    sendGlobalSystemMsg(newClient.getClient(),"**** J_SYSTEM: "+newClient.getClient().getUsername()+" has joined the room");
                 clientList.add(newClient);
                 System.out.println("Client added to list");
+
 
 
 
@@ -109,12 +111,24 @@ public class Server extends Thread{
 
 
     public void sendMsg(Client client, String msg) {
-
         for (ClientThread ct1 : getClientList()) {
             ct1.out.println(client.getUsername()+" : "+msg);
         }
-
     }
+
+    public void whoisIn(ClientThread clientThread) {
+        for (ClientThread ct1 : getClientList()) {
+            clientThread.out.println(ct1.getClient().getUsername());
+        }
+    }
+
+    public void sendGlobalSystemMsg(Client client, String msg) {
+        for (ClientThread ct1 : getClientList()) {
+            ct1.out.println("**** J_SYSTEM: "+msg);
+        }
+    }
+
+
 
 
     public List<ClientThread> getClientList() {

@@ -1,9 +1,11 @@
 package com.company;
 
-public class Alive extends Thread{
+import java.io.IOException;
+
+public class Alive extends Thread {
 
     ClientThread clientThread;
-    boolean running= true;
+    boolean running = true;
 
 
     public Alive(ClientThread clientThread) {
@@ -13,27 +15,46 @@ public class Alive extends Thread{
     @Override
     public void run() {
 
-        while(running){
+        System.out.println(clientThread.getClient().getUsername());
+        System.out.println("Checking heartbeat");
+                if(clientThread.amAlive){
+                    System.out.println("Thread is alive");
+                }
+                else{
+                    clientThread.close(clientThread);
+                }
 
 
-        System.out.println(clientThread.getClient().isAmAlive());
-        if(clientThread.getClient().isAmAlive()){
-            try {
-                System.out.println("Thread is alive");
-                sleep(60);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            System.out.println("Thread is dead");
-            clientThread.close(clientThread);
         }
 
-        }
+
+//
+//        while (running) {
+//            try {
+//                if (clientThread.socket.getInputStream().read() == -1) {
+//                    System.out.println("Not alive");
+//                    try {
+//                        sleep(60000);
+//                    } catch (InterruptedException e) {
+//                        System.out.println("Exception " + e.getMessage() + " is caught. ");
+//                    }
+//                } else {
+//                    System.out.println("Thread is Alive");
+//                    sleep(60000);
+//                }
+//            } catch (IOException e) {
+//                System.out.println("User: " + clientThread.getClient().getUsername() + " is not alive");
+//
+//                clientThread.close(clientThread);
+//                break;
+//
+//            } catch (InterruptedException e) {
+//                break;
+//            }
+//        }
 
 
     }
 
 
-}
+
