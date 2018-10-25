@@ -6,10 +6,10 @@ import sun.net.www.http.KeepAliveCache;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.NoSuchElementException;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Timer;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 public class ClientThread extends Thread {
     public Socket getSocket() {
@@ -50,28 +50,79 @@ public class ClientThread extends Thread {
     public void run() {
 
         out.println("Type messages now, send with ENTER");
-        String received=" ";
+        String received = "";
         System.out.println("Starting heartbeat thread");
-        Alive alive = new Alive(this);
-        AliveTask aliveTask = new AliveTask(alive);
-        Timer timer = new Timer();
 
-        timer.schedule(aliveTask, new Long(String.valueOf(0)), new Long(String.valueOf(60000)));
+        Alive alive = new Alive(ClientThread.this);
+        alive.start();
 
         while(this.doRun){
 
-            received = in.nextLine();
+           try{
+               received = in.nextLine();
+           }catch (NoSuchElementException e){
+               System.out.println("Client "+client.getUsername().toUpperCase()+" shut down unexpected at "+LocalTime.now().toString());
+               doRun=false;
+           }
 
-        if(received.equalsIgnoreCase("QUIT")){
-            close(this);
-            this.doRun=false;
-        }
-        if(received.equalsIgnoreCase("WHOSIN")){
-          server.whoisIn(this);
-        }
-        else{
-            server.sendMsg(client,received);
-        }
+            if(received.length()>250){
+                out.println("**** J_ERR: Message above 250 characters.");
+                break;
+            }
+
+            else if(received!=null || (received.length() > 0)){
+                String[] temparray = received.split(" ");
+                switch (temparray[0]){
+
+                    case "IMAV":
+//                        client.setDate(LocalDateTime.now());
+                        break;
+
+                    case "QUIT":
+                        close(this);
+                        this.doRun=false;
+                        break;
+
+                    case "WHOSIN":
+                        server.whoisIn(this);
+                        break;
+
+                    case "DATA":
+                        String received1;
+                        temparray = received.split(":");
+                        received1 = temparray[1];
+                        server.sendMsg(client, received1);
+                        break;
+
+                    default:  out.println("**** J_ERR: UNKOWN COMMAND");
+
+                }
+            }
+
+            else{
+                out.println("**** J_ERR: EMPTY COMMAND NOT ACCEPTED");
+            }
+
+
+
+
+
+//            if(received.equalsIgnoreCase("IMAV")){
+//                client.setDate(LocalDateTime.now());
+//            }
+//
+//        if(received.equalsIgnoreCase("QUIT")){
+//            close(this);
+//            this.doRun=false;
+//        }
+//        if(received.equalsIgnoreCase("WHOSIN")){
+//          server.whoisIn(this);
+//        }
+//
+//        else{
+//            server.sendMsg(client,received);
+//        }
+//
 
         }
     }

@@ -1,11 +1,16 @@
 package com.company;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 public class Client {
 
     private String username;
     private String ipAdress;
     private int port;
-    private boolean amAlive;
+    private LocalDateTime date;
+
+
 
     public Client() {
     }
@@ -18,9 +23,9 @@ public class Client {
         this.username = username;
         this.ipAdress = ipAdress;
         this.port = port;
-        this.amAlive=true;
-
     }
+
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -41,11 +46,12 @@ public class Client {
         this.port = port;
     }
 
-    public boolean isAmAlive() {
-        return amAlive;
+
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setAmAlive(boolean amAlive) {
-        this.amAlive = amAlive;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }

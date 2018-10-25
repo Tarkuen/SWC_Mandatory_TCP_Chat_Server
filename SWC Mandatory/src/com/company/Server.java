@@ -2,6 +2,7 @@ package com.company;
 
 import java.net.*;
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -69,7 +70,7 @@ public class Server extends Thread{
                 newClient.getClient().setIpAdress(input);
                 input=newClient.in.nextLine();
                 newClient.getClient().setPort(Integer.parseInt(input));
-                newClient.getClient().setAmAlive(true);
+                newClient.getClient().setDate(LocalDateTime.now());
 
 
                     for (ClientThread ct1 : clientList) {
@@ -117,8 +118,10 @@ public class Server extends Thread{
     }
 
     public void whoisIn(ClientThread clientThread) {
+        clientThread.out.println("    **** J_SYSTEM: WHO IS IN ? ****");
+        clientThread.out.println("_.~\"(_.~\"(_.~\"(_.~\"(_.~\"( _.~\"(_.~\"(_.~\"(_.~\"(_.~\"("+"\n");
         for (ClientThread ct1 : getClientList()) {
-            clientThread.out.println(ct1.getClient().getUsername());
+            clientThread.out.println("      "+ct1.getClient().getUsername().toUpperCase());
         }
     }
 
