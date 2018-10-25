@@ -20,6 +20,9 @@ public class Alive extends Thread {
         this.clientThread = clientThread;
     }
 
+    /**
+     *
+     */
     @Override
     public void run() {
 
