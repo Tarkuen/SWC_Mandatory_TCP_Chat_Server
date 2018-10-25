@@ -9,7 +9,7 @@ public class Client {
 
     Socket socket;
     Scanner in;
-    PrintWriter out;
+   volatile PrintWriter out;
     boolean amAlive = true;
 
     Scanner userEntry;
@@ -44,7 +44,10 @@ public class Client {
         out.println(username);
         out.println(ip);
         out.println(port);
-//        out.println("IMAV");
+
+        ImAliveThread imAliveThread = new ImAliveThread(Client.this);
+        imAliveThread.start();
+
 
         while (true) {
             if (ct1.isAlive()) {

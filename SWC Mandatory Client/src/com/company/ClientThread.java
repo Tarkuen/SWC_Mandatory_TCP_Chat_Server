@@ -13,8 +13,10 @@ public class ClientThread extends Thread {
 
     //    Listen
     @Override
-    public void run() {
+    public synchronized void run() {
+
         while (true) {
+
             if (client.in.hasNextLine()) {
                 String response = client.in.nextLine();
                 System.out.println(response);
