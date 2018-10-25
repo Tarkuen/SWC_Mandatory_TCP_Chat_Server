@@ -37,7 +37,6 @@ public class Alive extends Thread {
             LocalTime nowTime2 = now2.toLocalTime();
 
             long seconds = ChronoUnit.SECONDS.between(nowTime,nowTime2);
-            System.out.println(seconds);
             if(seconds<-61){
                 clientThread.close(this.clientThread);
             }

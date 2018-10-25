@@ -75,7 +75,7 @@ public class ClientThread extends Thread {
                 switch (temparray[0]){
 
                     case "IMAV":
-//                        client.setDate(LocalDateTime.now());
+                        client.setDate(LocalDateTime.now());
                         break;
 
                     case "QUIT":
@@ -127,20 +127,6 @@ public class ClientThread extends Thread {
         }
     }
 
-
-
-
-//    public void sendOneMsg(String msg){
-//
-//        for (int i = server.getClientList().size() - 1; i >= 0; i--) {
-//            ClientThread t1 = server.getClientList().get(i);
-//            t1.out.println(msg);
-//        }
-//
-//
-//        //        TODO: Her printes den
-//        System.out.println(msg+" From Client THread");
-//    }
 
 
     public void close(ClientThread targetThread){
