@@ -46,10 +46,12 @@ public class Server extends Thread {
     }
 
 
+
     public void start() {
 
         boolean isrunning = true;
 
+//    TODO: True Loop in the Task for accepting Clients
         while (isrunning) {
 
             System.out.println("Listening for a client");
@@ -59,30 +61,55 @@ public class Server extends Thread {
                 socket = server.accept();
                 System.out.println("Client Accepted");
                 ClientThread newClient = new ClientThread(socket, new Client(), Server.this);
-
                 newClient.out.println("J_OK: Welcome to the server");
+
                 String input = newClient.in.nextLine();
-                newClient.getClient().setUsername(input);
+
+                newClient.
+                        getClient().
+                        setUsername(input);
+
                 input = newClient.in.nextLine();
-                newClient.getClient().setIpAdress(input);
+
+                newClient.
+                        getClient().
+                        setIpAdress(input);
+
                 input = newClient.in.nextLine();
-                newClient.getClient().setPort(Integer.parseInt(input));
-                newClient.getClient().setDate(LocalDateTime.now());
+
+                newClient.
+                        getClient().
+                        setPort(Integer.parseInt(input));
+
+                newClient.
+                        getClient().
+                        setDate(LocalDateTime.now());
 
 
                 for (ClientThread ct1 : clientList) {
-                    if (newClient.getClient().getUsername().equalsIgnoreCase(ct1.getClient().getUsername())) {
-                        newClient.getClient().setUsername(newClient.getClient().getUsername() + uniqueConnectionID);
+
+                    if (newClient.getClient().
+                            getUsername().
+                            equalsIgnoreCase
+                                    (ct1.getClient()
+                                            .getUsername())) {
+                        newClient.getClient()
+                                .setUsername
+                                        (newClient.getClient().getUsername()
+                                                + uniqueConnectionID);
+
                         newClient.out.print("Bad Username - Added " + uniqueConnectionID + " to name" + '\n');
+
                         uniqueConnectionID++;
                     }
                 }
 
                 sendGlobalSystemMsg(newClient.getClient(), "**** J_SYSTEM: " + newClient.getClient().getUsername() + " has joined the room");
+
                 clientList.add(newClient);
                 System.out.println("Client added to list");
 
-
+//                TODO: Thread for a recieving a Clients Messages
                 Thread t2 = new Thread(newClient);
                 t2.start();
 
@@ -95,13 +122,14 @@ public class Server extends Thread {
 
     }
 
-
+//            TODO: Send Messages to All Users
     public void sendMsg(Client client, String msg) {
         for (ClientThread ct1 : getClientList()) {
             ct1.out.println(client.getUsername() + " : " + msg);
         }
     }
 
+//            TODO: Who is the chat room?
     public void whoisIn(ClientThread clientThread) {
         clientThread.out.println("    **** J_SYSTEM: WHO IS IN ? ****");
         clientThread.out.println("_.~\"(_.~\"(_.~\"(_.~\"(_.~\"( _.~\"(_.~\"(_.~\"(_.~\"(_.~\"(" + "\n");
@@ -109,7 +137,7 @@ public class Server extends Thread {
             clientThread.out.println("      " + ct1.getClient().getUsername().toUpperCase());
         }
     }
-
+//            TODO: Send a System message
     public void sendGlobalSystemMsg(Client client, String msg) {
         for (ClientThread ct1 : getClientList()) {
             ct1.out.println("**** J_SYSTEM: " + msg);

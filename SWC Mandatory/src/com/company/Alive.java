@@ -25,12 +25,12 @@ public class Alive extends Thread {
 
         do{
         try {
-            sleep(3000);
+            sleep(60000);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+//            TODO: Matching Timestamp with System LocalTime (in seconds).
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime now2 = clientThread.getClient().getDate();
             LocalTime nowTime = now.toLocalTime();

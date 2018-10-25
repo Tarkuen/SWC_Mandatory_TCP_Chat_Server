@@ -56,6 +56,8 @@ public class ClientThread extends Thread {
         Alive alive = new Alive(ClientThread.this);
         alive.start();
 
+
+//        TODO: Loop for receiving messages and define the message' case.
         while(this.doRun){
 
            try{
@@ -72,6 +74,8 @@ public class ClientThread extends Thread {
 
             else if(received!=null || (received.length() > 0)){
                 String[] temparray = received.split(" ");
+
+//                TODO: Switch Case for Messages
                 switch (temparray[0]){
 
                     case "IMAV":
@@ -94,18 +98,17 @@ public class ClientThread extends Thread {
                         server.sendMsg(client, received1);
                         break;
 
+//                        TODO: Default when no case is reached
                     default:  out.println("**** J_ERR: UNKOWN COMMAND");
 
                 }
             }
 
+//            TODO: Error handled empty messages.
+
             else{
                 out.println("**** J_ERR: EMPTY COMMAND NOT ACCEPTED");
             }
-
-
-
-
 
 //            if(received.equalsIgnoreCase("IMAV")){
 //                client.setDate(LocalDateTime.now());
@@ -128,7 +131,7 @@ public class ClientThread extends Thread {
     }
 
 
-
+//              TODO: Close a Connection
     public void close(ClientThread targetThread){
         try {
             System.out.println("**** J_SYSTEM:  Closing Connection");

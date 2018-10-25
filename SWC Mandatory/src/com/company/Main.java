@@ -6,7 +6,8 @@ public class Main {
 
     Server server = new Server(6000);
     Thread t1 = new Thread(server);
-   t1.start();
+//    TODO: Starting Server Thread, for accepting Clients
+    t1.start();
 
 
 
